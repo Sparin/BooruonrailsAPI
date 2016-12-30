@@ -37,10 +37,7 @@ namespace BooruonrailsAPI.Responses
         }
 
         [JsonProperty("id")]
-        public string ID { get; private set; }
-
-        [JsonProperty("id_number")]
-        public int IdNumber { get; private set; }
+        public int ID { get; private set; }
 
         [JsonProperty("created_at")]
         public string CreatedAt { get; private set; }
@@ -50,6 +47,12 @@ namespace BooruonrailsAPI.Responses
 
         [JsonProperty("duplicate_reports")]
         public BooruonrailsDuplicateReport[] DuplicateReports { get; private set; }
+
+        [JsonProperty("first_seen_at")]
+        public string FirstSeenAt { get; private set; }
+
+        [JsonProperty("uploader_id")]
+        public int? UploaderID { get; private set; }
 
         [JsonProperty("file_name")]
         public string Filename { get; private set; }
@@ -102,7 +105,7 @@ namespace BooruonrailsAPI.Responses
         [JsonProperty("sha512_hash")]
         public string SHA512 { get; private set; }
 
-        [JsonProperty("original_sha512_hash")]
+        [JsonProperty("orig_sha512_hash")]
         public string OriginalSHA512 { get; private set; }
 
         [JsonProperty("source_url")]

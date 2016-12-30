@@ -8,7 +8,6 @@ namespace BooruonrailsAPI.Enums
     public enum TagsType
     {
         All,
-        System,
         Aliases,
         Implied
     }

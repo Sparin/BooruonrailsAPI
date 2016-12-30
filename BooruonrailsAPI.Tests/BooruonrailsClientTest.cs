@@ -14,7 +14,7 @@ namespace BooruonrailsAPI.Tests
         private const string APIKey_Expected = "b1vdApr3qruoFKDdKDzy";
         private const string username = "techmail.techmail@mail.ru";
         private const string password = "BooruonrailsAPItech";
-        private const string baseUri = "https://trixiebooru.org";
+        private const string baseUri = "http://0s.mrsxe4djmjxw64tvfzxxezy.nblz.ru/";//"https://trixiebooru.org";
 
         [Test]
         public void GetImages([Values(SearchMethod.AllTop, SearchMethod.Favourites, SearchMethod.Images, SearchMethod.Search, SearchMethod.Top, SearchMethod.WatchList)]SearchMethod method)
@@ -28,7 +28,7 @@ namespace BooruonrailsAPI.Tests
             Console.WriteLine("Found {0} images by search method named \"{1}\"", images.Length, method.ToString());
             foreach (BooruonrailsImage img in images)
             {
-                Console.WriteLine("Image #{0}\r\n\tScore: {1}\r\n\tInteractions count: {2}", img.IdNumber, img.Score, img.Interactions.Length);
+                Console.WriteLine("Image #{0}\r\n\tScore: {1}\r\n\tInteractions count: {2}", img.ID, img.Score, img.Interactions.Length);
                 foreach (BooruonrailsInteraction inter in img.Interactions)
                     Console.WriteLine("\t\t{0} - {1}", inter.InteractionType, inter.Value);
             }
@@ -40,14 +40,15 @@ namespace BooruonrailsAPI.Tests
         public void GetImage([Values(702641)] int idNumber)
         {
             BooruonrailsClient client = new BooruonrailsClient(baseUri);
+            client.SignIn(username,password);
             BooruonrailsImage img = client.GetImage(idNumber);
 
             Console.WriteLine("Found image by search method named \"{0}\"", "GetImage()");
-            Console.WriteLine("Image #{0}\r\n\tScore: {1}\r\n\tInteractions count: {2}", img.IdNumber, img.Score, img.Interactions.Length);
+            Console.WriteLine("Image #{0}\r\n\tScore: {1}\r\n\tInteractions count: {2}", img.ID, img.Score, img.Interactions.Length);
             foreach (BooruonrailsInteraction inter in img.Interactions)
                 Console.WriteLine("\t\t{0} - {1}", inter.InteractionType, inter.Value);
 
-            Assert.AreEqual(idNumber, img.IdNumber);
+            Assert.AreEqual(idNumber, Convert.ToInt32(img.ID));
         }
 
         [Test]
@@ -87,7 +88,7 @@ namespace BooruonrailsAPI.Tests
         }
 
         [Test]
-        public void GetTags([Values(TagsType.Aliases, TagsType.All, TagsType.Implied, TagsType.System)]TagsType type)
+        public void GetTags([Values(TagsType.Aliases, TagsType.All, TagsType.Implied)]TagsType type)
         {
             BooruonrailsClient client = new BooruonrailsClient(baseUri);
             BooruonrailsTag[] tags = client.GetTags(type);

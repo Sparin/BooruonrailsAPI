@@ -207,13 +207,11 @@ namespace BooruonrailsAPI
         {
             List<BooruonrailsTag> Result = new List<BooruonrailsTag>();
             string json = DownloadString(GetUri(type, query));
-
-            JObject js = JObject.Parse(json);
-            foreach (JProperty w in js.Children())
-                if (w.Name == "tags")
-                    foreach (JArray x in w.Children())
-                        foreach (JObject m in x.Children<JObject>())
-                            Result.Add(JsonConvert.DeserializeObject<BooruonrailsTag>(m.ToString()));
+            Console.WriteLine(json);
+            
+            JArray x = JArray.Parse(json);
+            foreach (JObject m in x.Children<JObject>())
+                Result.Add(JsonConvert.DeserializeObject<BooruonrailsTag>(m.ToString()));
 
             return Result.ToArray();
         }
@@ -283,8 +281,6 @@ namespace BooruonrailsAPI
                     return new Uri(BaseUri, "/tags/aliases.json" + queryRow);
                 case TagsType.Implied:
                     return new Uri(BaseUri, "/tags/implied.json" + queryRow);
-                case TagsType.System:
-                    return new Uri(BaseUri, "/tags/system.json" + queryRow);
                 case TagsType.All:
                 default:
                     return new Uri(BaseUri, "/tags.json" + queryRow);
@@ -314,6 +310,7 @@ namespace BooruonrailsAPI
         {
             HttpWebRequest Request = (HttpWebRequest)HttpWebRequest.Create(site);
             SetSettings(ref Request);
+            Request.ContentLength = 0;
             Request.Method = method;
 
             HttpWebResponse webResponse = (HttpWebResponse)Request.GetResponse();
@@ -322,7 +319,7 @@ namespace BooruonrailsAPI
             string response_data = string.Empty;
             using (var reader = new StreamReader(webResponse.GetResponseStream()))
                 response_data = reader.ReadToEnd();
-
+            Console.WriteLine(response_data);
             return response_data;
         }
 
